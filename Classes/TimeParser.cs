@@ -10,6 +10,12 @@ namespace BerlinClock.Classes
     public class TimeParser : ITimeParser
     {
         static string pattern = @"(\d{2}):(\d{2}):(\d{2})";
+        static int minPossibleHours = 0;
+        static int maxPossibleHours = 24;
+        static int minPossibleMinutes = 0;
+        static int maxPossibleMinutes = 59;
+        static int minPossibleSeconds = 0;
+        static int maxPossibleSeconds = 59;
 
         public ParsedTime Parse(string input)
         {
@@ -27,8 +33,24 @@ namespace BerlinClock.Classes
                     seconds = Int32.Parse(matches[0].Groups[3].Value);
                 }
             }
-            
-            return new ParsedTime(hours, minutes, seconds);
+
+            if (NumbersValid(hours, minutes, seconds))
+            {
+                return new ParsedTime(hours, minutes, seconds);
+            }
+
+            return new ParsedTime(-1, -1, -1);
+        }
+
+        private bool NumbersValid(int hours, int minutes, int seconds)
+        {
+            if (hours < minPossibleHours || hours > maxPossibleHours) return false;
+            if (minutes < minPossibleMinutes || minutes > maxPossibleMinutes) return false;
+            if (seconds < minPossibleSeconds || seconds > maxPossibleSeconds) return false;
+            if (hours == maxPossibleHours && (minutes != minPossibleMinutes || seconds != minPossibleSeconds))
+                return false;
+
+            return true;
         }
     }
 }

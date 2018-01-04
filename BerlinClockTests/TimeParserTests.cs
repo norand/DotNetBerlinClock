@@ -37,6 +37,15 @@ namespace BerlinClockTests
             CheckIncorrectTime("43:23:35:56");
         }
 
+        [TestMethod]
+        public void ShouldReturnDefaultForCorrectTimeStringWithIncorrectHoursMinutesSeconds()
+        {
+            CheckIncorrectTime("25:00:00");
+            CheckIncorrectTime("21:60:00");
+            CheckIncorrectTime("03:00:82");
+            CheckIncorrectTime("24:01:02");
+        }
+
         private void CheckIncorrectTime(string aTime)
         {
             // Arrange
